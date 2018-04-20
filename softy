@@ -46,7 +46,7 @@ fi
 
 # OMV
 OMV_STATUS="$(check_if_installed openmediavault && echo "on" || echo "off" )"
-[[ "$family" != "Ubuntu" ]] && LIST+=( "OMV" "OpenMediaVault NAS solution" "$OMV_STATUS" ) && LIST_CONST=5
+LIST+=( "OMV" "OpenMediaVault NAS solution" "$OMV_STATUS" ) && LIST_CONST=5
 # MINIdlna
 MINIDLNA_STATUS="$(check_if_installed minidlna && echo "on" || echo "off" )"
 LIST+=( "Minidlna" "Lightweight DLNA/UPnP-AV server" "$MINIDLNA_STATUS" )
@@ -323,23 +323,8 @@ install_omv (){
 # On Debian install OpenMediaVault 3 (Jessie) or 4 (Stretch)
 #------------------------------------------------------------------------------------------------------------------------------------------
 # TODO: Some OMV packages lack authentication
-
-if [[ "$family" == "Ubuntu" ]]; then
-	dialog --backtitle "$backtitle" --title "Dependencies not met" --msgbox "\nOpenMediaVault can only be installed on Debian." 7 52
-	sleep 5
-	exit 1
-fi
-
-case $distribution in
-	jessie)
-		OMV_Name="erasmus"
-		OMV_EXTRAS_URL="https://github.com/OpenMediaVault-Plugin-Developers/packages/raw/master/openmediavault-omvextrasorg_latest_all3.deb"
-		;;
-	stretch)
-		OMV_Name="arrakis"
-		OMV_EXTRAS_URL="https://github.com/OpenMediaVault-Plugin-Developers/packages/raw/master/openmediavault-omvextrasorg_latest_all4.deb"
-		;;
-esac
+OMV_Name="arrakis"
+OMV_EXTRAS_URL="https://github.com/OpenMediaVault-Plugin-Developers/packages/raw/master/openmediavault-omvextrasorg_latest_all4.deb"
 
 systemctl status log2ram >/dev/null 2>&1 && (systemctl stop log2ram ; systemctl disable log2ram ; rm /etc/cron.daily/log2ram)
 export APT_LISTCHANGES_FRONTEND=none
